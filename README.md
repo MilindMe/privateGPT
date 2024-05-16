@@ -33,7 +33,11 @@ git clone https://github.com/MilindMe/privateGPT.git
 Before running, we need to make sure we have the LLM Model installed locally. We are currently using LLAMA3-Instruct. 
 Download the model at https://huggingface.co/MaziyarPanahi/Meta-Llama-3-8B-Instruct-GGUF/blob/main/Meta-Llama-3-8B-Instruct.Q4_K_S.gguf. 
 
-Save the model in your bdo-gpt folder.
+Save the model in a folder called models within your bdo-gpt folder.
+```
+cd bdo-gpt
+mkdir models
+```
 
 ## Python Dependencies
 To avoid Conflicting dependencies, we will first set up a virtual environment. The following command sets up a virtual environment called bdoGpt, and activates it:
