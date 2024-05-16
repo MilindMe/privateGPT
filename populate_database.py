@@ -6,8 +6,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.schema.document import Document
 from get_embedding_function import get_embedding_function
 from langchain.vectorstores.chroma import Chroma
-
-
+from gpt4all import Embed4All
 ## TESTING ===========================================
 import time
 start_time = time.time()
@@ -42,7 +41,7 @@ def load_documents():
 #            chunk_overlap greater than 1
 def split_documents(documents: list[Document]):
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=800,
+        chunk_size=1000,
         chunk_overlap=80,
         length_function=len,
         is_separator_regex=False,
@@ -58,9 +57,14 @@ def split_documents(documents: list[Document]):
 
 def add_to_chroma(chunks: list[Document]):
     # Load the existing database.
+    
     db = Chroma(
         persist_directory=CHROMA_PATH, embedding_function=get_embedding_function()
     )
+
+    #db = Chroma(
+     #    persist_directory=CHROMA_PATH, embedding_function=huggingface_embed()
+    #)
 
     # Calculate Page IDs.
     chunks_with_ids = calculate_chunk_ids(chunks)
