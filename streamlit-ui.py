@@ -1,5 +1,7 @@
 import streamlit as st
 from query_data import query_rag
+
+import time
 # ===============================================================================
 # M. Meetarbhan 
 # 5/7/2024
@@ -8,16 +10,28 @@ from query_data import query_rag
 # python
 
 st.title("BdoGPT_v1")
+# GLOBAL CONSTANTS
 
-#message = st.chat_message("assistant")
-#message.write("prototype-1")
 
-# prompt = st.chat_input("Say something")
-# if prompt: 
-#    st.write(f"sipaki has sent the following prompt : {prompt} ")
+# ===============================================================================
+# M.Meetarbhan
+# 5/14/2024
+# Domain Specific Button Toggle
+if 'domainType' not in st.session_state:
+    st.session_state.domainType = False
 
+def toggle_domain_type():
+    st.session_state.domainType = not st.session_state.domainType
+
+st.button("AML-CFT Mode", key=None, help='Chat w/ AML PDFs', type="primary", on_click=toggle_domain_type)
+
+st.caption(f"AML-CFT Mode: {st.session_state.domainType}")
+# ===============================================================================
+
+# UI-BODY
 if "messages" not in st.session_state:
     st.session_state.messages = []
+
 
 def add_message(role, content):
     st.session_state.messages.append({"role": role, "content": content})
@@ -30,15 +44,20 @@ for message in st.session_state.messages:
 
 prompt = st.chat_input ("What is up?")
 if prompt: 
+    start_time = time.time()
     add_message("user", prompt)
-    response_text = query_rag(prompt)
+
+    msg=st.toast('Processing...')
+    time.sleep(2)
+    msg.toast('Asking Geshvir for Help...')
+
+    response_text = query_rag(prompt, st.session_state.domainType)
+
+    msg.toast('Alo Zuhayr??...')
+    time.sleep(1)
     add_message("assistant", response_text)
 
-    #with st.chat_message("user"):
-     #   st.markdown(prompt)
-      #  st.session_state.messages.append({"role":"user", "content": prompt})
-
-
-
-
+    time_taken = time.time() - start_time
+    
+    st.success(f"Success :) Time Taken :{time_taken}", icon = "🔥")  
 # ===============================================================================
